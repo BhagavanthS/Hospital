@@ -3,43 +3,44 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>AURA Health Reserve | Clinical Admission &amp; Triage</title>
+  <title>AURA Health Reserve | Clinical Admission &amp; Triage Suite</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
     :root {
       --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
       --font-mono: 'JetBrains Mono', monospace;
       
-      --bg-base: #060913;
-      --bg-surface: #0e1526;
-      --bg-surface-elevated: #162035;
-      --bg-input: #090e1a;
+      --bg-base: #050811;
+      --bg-surface: #0b1120;
+      --bg-surface-elevated: #131d31;
+      --bg-input: #070c18;
       
-      --accent-cyan: #06b6d4;
-      --accent-teal: #14b8a6;
+      --accent-cyan: #00d8f6;
+      --accent-cyan-glow: rgba(0, 216, 246, 0.35);
+      --accent-teal: #05f2c7;
       --accent-blue: #3b82f6;
-      --accent-purple: #8b5cf6;
+      --accent-indigo: #6366f1;
       
       --text-primary: #f8fafc;
       --text-secondary: #94a3b8;
       --text-muted: #64748b;
       
-      --border-subtle: rgba(255, 255, 255, 0.08);
-      --border-focus: #06b6d4;
-      --border-glow: 0 0 0 3px rgba(6, 182, 212, 0.25);
+      --border-subtle: rgba(255, 255, 255, 0.09);
+      --border-focus: #00d8f6;
+      --border-glow: 0 0 0 3px rgba(0, 216, 246, 0.25);
       
-      --danger: #f43f5e;
-      --danger-bg: rgba(244, 63, 94, 0.15);
+      --danger: #ff3366;
+      --danger-bg: rgba(255, 51, 102, 0.16);
       --warning: #fbbf24;
-      --warning-bg: rgba(251, 191, 36, 0.15);
+      --warning-bg: rgba(251, 191, 36, 0.16);
       --success: #10b981;
-      --success-bg: rgba(16, 185, 129, 0.15);
+      --success-bg: rgba(16, 185, 129, 0.16);
       
       --radius-sm: 8px;
       --radius-md: 14px;
-      --radius-lg: 20px;
+      --radius-lg: 22px;
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -47,12 +48,13 @@
     body {
       background-color: var(--bg-base);
       background-image: 
-        radial-gradient(circle at 15% 15%, rgba(6, 182, 212, 0.12) 0%, transparent 45%),
-        radial-gradient(circle at 85% 85%, rgba(139, 92, 246, 0.1) 0%, transparent 50%);
+        radial-gradient(circle at 10% 15%, rgba(0, 216, 246, 0.12) 0%, transparent 45%),
+        radial-gradient(circle at 90% 85%, rgba(99, 102, 241, 0.12) 0%, transparent 50%),
+        radial-gradient(circle at 50% 50%, rgba(5, 242, 199, 0.05) 0%, transparent 60%);
       color: var(--text-primary);
       font-family: var(--font-sans);
       min-height: 100vh;
-      padding: 2.5rem 1.5rem;
+      padding: 2.5rem 1.25rem;
       display: flex;
       justify-content: center;
       align-items: flex-start;
@@ -61,41 +63,41 @@
 
     .shell {
       width: 100%;
-      max-width: 980px;
+      max-width: 1020px;
       background: var(--bg-surface);
       border: 1px solid var(--border-subtle);
       border-radius: var(--radius-lg);
-      box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.7), 0 0 80px -20px rgba(6, 182, 212, 0.2);
-      backdrop-filter: blur(20px);
+      box-shadow: 0 30px 70px -15px rgba(0, 0, 0, 0.8), 0 0 100px -20px rgba(0, 216, 246, 0.25);
+      backdrop-filter: blur(24px);
       overflow: hidden;
       position: relative;
     }
 
-    /* Ambient top line */
+    /* Ambient top line neon pulse */
     .shell::after {
       content: '';
       position: absolute;
       top: 0; left: 0; right: 0;
       height: 3px;
-      background: linear-gradient(90deg, #3b82f6, var(--accent-cyan), var(--accent-teal), var(--accent-purple));
+      background: linear-gradient(90deg, #3b82f6, var(--accent-cyan), var(--accent-teal), #8b5cf6);
     }
 
-    /* Visual Hero Banner with Image */
+    /* Hero Banner with Clinical Image */
     .hero-banner {
       position: relative;
-      height: 180px;
-      background-image: url('https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?auto=format&fit=crop&w=1400&q=80');
+      height: 220px;
+      background-image: url('https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?auto=format&fit=crop&w=1600&q=80');
       background-size: cover;
-      background-position: center 35%;
+      background-position: center 40%;
       display: flex;
       align-items: flex-end;
-      padding: 2rem 2.5rem;
+      padding: 2.5rem 3rem;
     }
 
     .hero-overlay {
       position: absolute;
       inset: 0;
-      background: linear-gradient(180deg, rgba(6, 9, 19, 0.4) 0%, rgba(14, 21, 38, 0.95) 100%);
+      background: linear-gradient(180deg, rgba(5, 8, 17, 0.35) 0%, rgba(11, 17, 32, 0.96) 95%);
     }
 
     .hero-content {
@@ -105,6 +107,8 @@
       justify-content: space-between;
       align-items: flex-end;
       width: 100%;
+      flex-wrap: wrap;
+      gap: 1.25rem;
     }
 
     .brand-group {
@@ -114,48 +118,49 @@
     }
 
     .brand-avatar {
-      width: 56px;
-      height: 56px;
+      width: 60px;
+      height: 60px;
       border-radius: var(--radius-md);
       background: linear-gradient(135deg, var(--accent-cyan), var(--accent-blue));
       display: flex;
       align-items: center;
       justify-content: center;
-      box-shadow: 0 0 25px rgba(6, 182, 212, 0.4);
+      box-shadow: 0 0 25px var(--accent-cyan-glow);
+      border: 1px solid rgba(255, 255, 255, 0.3);
     }
 
-    .brand-avatar svg { width: 30px; height: 30px; fill: #ffffff; }
+    .brand-avatar svg { width: 32px; height: 32px; fill: #ffffff; }
 
     .brand-text h1 {
-      font-size: 1.5rem;
+      font-size: 1.6rem;
       font-weight: 800;
       letter-spacing: -0.02em;
       color: #ffffff;
-      text-shadow: 0 2px 8px rgba(0,0,0,0.5);
+      text-shadow: 0 2px 10px rgba(0,0,0,0.7);
     }
 
     .brand-text p {
       font-size: 0.85rem;
       color: var(--accent-cyan);
-      letter-spacing: 0.05em;
+      letter-spacing: 0.06em;
       text-transform: uppercase;
       font-family: var(--font-mono);
-      font-weight: 600;
+      font-weight: 700;
     }
 
     .status-badge {
       display: inline-flex;
       align-items: center;
-      gap: 0.5rem;
+      gap: 0.6rem;
       background: rgba(16, 185, 129, 0.15);
-      border: 1px solid rgba(16, 185, 129, 0.35);
+      border: 1px solid rgba(16, 185, 129, 0.4);
       color: #34d399;
-      padding: 0.45rem 1rem;
+      padding: 0.5rem 1.1rem;
       border-radius: 9999px;
       font-size: 0.75rem;
       font-weight: 700;
       font-family: var(--font-mono);
-      backdrop-filter: blur(8px);
+      backdrop-filter: blur(10px);
     }
 
     .dot-live {
@@ -169,14 +174,49 @@
 
     @keyframes flash {
       0%, 100% { opacity: 1; transform: scale(1); }
-      50% { opacity: 0.3; transform: scale(0.85); }
+      50% { opacity: 0.35; transform: scale(0.85); }
     }
+
+    /* Trust & Staff Banner */
+    .trust-strip {
+      background: rgba(0, 0, 0, 0.35);
+      border-bottom: 1px solid var(--border-subtle);
+      padding: 0.85rem 3rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.8rem;
+      color: var(--text-secondary);
+      flex-wrap: wrap;
+      gap: 0.75rem;
+    }
+
+    .staff-group {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .staff-avatars {
+      display: flex;
+    }
+
+    .staff-avatars img {
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      border: 2px solid var(--bg-surface);
+      margin-left: -6px;
+      object-fit: cover;
+    }
+
+    .staff-avatars img:first-child { margin-left: 0; }
 
     /* Stepper Navigation */
     .stepper-rail {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      background: rgba(0, 0, 0, 0.35);
+      background: rgba(0, 0, 0, 0.25);
       border-bottom: 1px solid var(--border-subtle);
     }
 
@@ -193,21 +233,21 @@
     .step-tab.active {
       border-bottom-color: var(--accent-cyan);
       color: var(--text-primary);
-      background: rgba(6, 182, 212, 0.04);
+      background: rgba(0, 216, 246, 0.05);
     }
 
     .step-tab.completed { color: var(--accent-teal); }
 
     .step-num {
-      width: 30px;
-      height: 30px;
+      width: 32px;
+      height: 32px;
       border-radius: 50%;
       background: rgba(255, 255, 255, 0.05);
       border: 1px solid var(--border-subtle);
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 0.8rem;
+      font-size: 0.82rem;
       font-weight: 700;
       font-family: var(--font-mono);
     }
@@ -216,21 +256,21 @@
       background: linear-gradient(135deg, var(--accent-cyan), var(--accent-blue));
       color: #fff;
       border-color: var(--accent-cyan);
-      box-shadow: 0 0 15px rgba(6, 182, 212, 0.4);
+      box-shadow: 0 0 15px var(--accent-cyan-glow);
     }
 
     .step-tab.completed .step-num {
       background: var(--accent-teal);
-      color: #fff;
+      color: #050811;
       border-color: var(--accent-teal);
     }
 
     .step-info { display: flex; flex-direction: column; }
     .step-phase { font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.08em; opacity: 0.6; font-family: var(--font-mono); }
-    .step-name { font-size: 0.9rem; font-weight: 600; }
+    .step-name { font-size: 0.92rem; font-weight: 600; }
 
     /* Form Body */
-    .portal-body { padding: 2.5rem; }
+    .portal-body { padding: 3rem; }
 
     .step-pane { display: none; animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
     .step-pane.active { display: block; }
@@ -241,8 +281,8 @@
     }
 
     .section-lead { margin-bottom: 2rem; }
-    .section-lead h2 { font-size: 1.35rem; font-weight: 700; color: #fff; }
-    .section-lead p { color: var(--text-secondary); font-size: 0.9rem; margin-top: 0.3rem; }
+    .section-lead h2 { font-size: 1.4rem; font-weight: 700; color: #fff; letter-spacing: -0.01em; }
+    .section-lead p { color: var(--text-secondary); font-size: 0.92rem; margin-top: 0.35rem; }
 
     .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
     .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
@@ -253,7 +293,7 @@
     label {
       font-size: 0.78rem;
       font-weight: 700;
-      letter-spacing: 0.04em;
+      letter-spacing: 0.05em;
       color: var(--text-secondary);
       text-transform: uppercase;
       font-family: var(--font-mono);
@@ -266,7 +306,7 @@
       background: var(--bg-input);
       border: 1px solid var(--border-subtle);
       border-radius: var(--radius-sm);
-      padding: 0.85rem 1.1rem;
+      padding: 0.9rem 1.15rem;
       font-size: 0.95rem;
       color: var(--text-primary);
       font-family: var(--font-sans);
@@ -280,12 +320,12 @@
       background: rgba(12, 19, 34, 0.95);
     }
 
-    /* Department Cards Selection with Images */
+    /* Specialty Department Cards with Imagery */
     .dept-cards-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 1rem;
-      margin-bottom: 1.5rem;
+      gap: 1.15rem;
+      margin-bottom: 1.75rem;
     }
 
     .dept-card {
@@ -295,8 +335,8 @@
       border: 2px solid var(--border-subtle);
       background: var(--bg-surface-elevated);
       cursor: pointer;
-      transition: all 0.25s ease;
-      height: 120px;
+      transition: all 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+      height: 130px;
     }
 
     .dept-card img {
@@ -313,27 +353,31 @@
     .dept-card-overlay {
       position: absolute;
       inset: 0;
-      background: linear-gradient(180deg, rgba(6, 9, 19, 0.2) 0%, rgba(14, 21, 38, 0.9) 80%);
+      background: linear-gradient(180deg, rgba(6, 9, 19, 0.2) 0%, rgba(11, 17, 32, 0.92) 80%);
       display: flex;
       flex-direction: column;
       justify-content: flex-end;
-      padding: 0.85rem;
+      padding: 1rem;
       z-index: 2;
     }
 
     .dept-card-title {
-      font-size: 0.85rem;
+      font-size: 0.88rem;
       font-weight: 700;
       color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
     }
 
     .dept-card.selected {
       border-color: var(--accent-cyan);
-      box-shadow: 0 0 20px rgba(6, 182, 212, 0.35);
+      box-shadow: 0 0 25px var(--accent-cyan-glow);
+      transform: translateY(-2px);
     }
 
     .dept-card.selected .dept-card-overlay {
-      background: linear-gradient(180deg, rgba(6, 182, 212, 0.1) 0%, rgba(6, 182, 212, 0.5) 100%);
+      background: linear-gradient(180deg, rgba(0, 216, 246, 0.15) 0%, rgba(0, 100, 150, 0.65) 100%);
     }
 
     /* Live Triage Urgency Monitor */
@@ -367,7 +411,7 @@
       font-family: var(--font-mono);
       font-size: 0.8rem;
       font-weight: 800;
-      padding: 0.5rem 1rem;
+      padding: 0.55rem 1.15rem;
       border-radius: var(--radius-sm);
       letter-spacing: 0.05em;
     }
@@ -377,8 +421,8 @@
     .pill-emergency {
       background: var(--danger-bg);
       color: #fda4af;
-      border: 1px solid rgba(244, 63, 94, 0.4);
-      box-shadow: 0 0 20px rgba(244, 63, 94, 0.25);
+      border: 1px solid rgba(255, 51, 102, 0.45);
+      box-shadow: 0 0 20px rgba(255, 51, 102, 0.3);
     }
 
     /* Slider */
@@ -393,11 +437,11 @@
 
     input[type="range"]::-webkit-slider-thumb {
       -webkit-appearance: none;
-      width: 20px;
-      height: 20px;
+      width: 22px;
+      height: 22px;
       border-radius: 50%;
       background: var(--accent-cyan);
-      box-shadow: 0 0 10px var(--accent-cyan);
+      box-shadow: 0 0 12px var(--accent-cyan);
       cursor: pointer;
       border: 2px solid #fff;
     }
@@ -420,8 +464,8 @@
     }
 
     .signature-canvas-container {
-      background: #070c16;
-      height: 150px;
+      background: #070c18;
+      height: 160px;
       position: relative;
     }
 
@@ -438,7 +482,7 @@
       align-items: center;
       padding: 0.85rem 1.25rem;
       border-top: 1px solid var(--border-subtle);
-      background: rgba(0,0,0,0.25);
+      background: rgba(0,0,0,0.3);
     }
 
     /* Buttons */
@@ -455,8 +499,8 @@
       display: inline-flex;
       align-items: center;
       gap: 0.6rem;
-      padding: 0.9rem 1.8rem;
-      font-size: 0.9rem;
+      padding: 0.95rem 1.9rem;
+      font-size: 0.92rem;
       font-weight: 700;
       border-radius: var(--radius-sm);
       cursor: pointer;
@@ -479,45 +523,46 @@
 
     .btn-action {
       background: linear-gradient(135deg, var(--accent-cyan), var(--accent-blue));
-      color: #ffffff;
-      box-shadow: 0 4px 25px rgba(6, 182, 212, 0.35);
+      color: #050811;
+      font-weight: 800;
+      box-shadow: 0 4px 25px var(--accent-cyan-glow);
     }
 
     .btn-action:hover {
-      box-shadow: 0 6px 30px rgba(6, 182, 212, 0.55);
+      box-shadow: 0 6px 30px rgba(0, 216, 246, 0.6);
       transform: translateY(-1px);
     }
 
     /* Admission Boarding Pass View */
     #admissionPassView {
       display: none;
-      padding: 2.5rem;
+      padding: 3rem;
     }
 
     .pass-container {
-      background: #0b1324;
-      border: 1px solid rgba(6, 182, 212, 0.4);
+      background: #0d1629;
+      border: 1px solid rgba(0, 216, 246, 0.4);
       border-radius: var(--radius-md);
       overflow: hidden;
-      box-shadow: 0 20px 45px rgba(0, 0, 0, 0.5);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
     }
 
     .pass-header {
-      background: linear-gradient(90deg, #0e1e3b, #1b2f56);
-      padding: 1.75rem 2rem;
+      background: linear-gradient(90deg, #101c36, #192c54);
+      padding: 1.75rem 2.25rem;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      border-bottom: 1px dashed rgba(255, 255, 255, 0.15);
+      border-bottom: 1px dashed rgba(255, 255, 255, 0.2);
     }
 
-    .pass-barcode { display: flex; gap: 3px; height: 40px; align-items: flex-end; }
+    .pass-barcode { display: flex; gap: 3px; height: 42px; align-items: flex-end; }
     .bar { background: #fff; width: 2px; height: 100%; }
     .bar.thick { width: 5px; }
     .bar.short { height: 70%; }
 
     .pass-body {
-      padding: 2.5rem 2rem;
+      padding: 2.5rem 2.25rem;
       display: grid;
       grid-template-columns: 2fr 1fr;
       gap: 2.5rem;
@@ -525,10 +570,10 @@
 
     .data-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; }
     .data-cell span { display: block; font-size: 0.72rem; text-transform: uppercase; font-family: var(--font-mono); color: var(--text-muted); }
-    .data-cell strong { display: block; font-size: 1.1rem; color: #fff; font-weight: 600; margin-top: 0.2rem; }
+    .data-cell strong { display: block; font-size: 1.15rem; color: #fff; font-weight: 600; margin-top: 0.25rem; }
 
     .pass-aside {
-      border-left: 1px dashed rgba(255, 255, 255, 0.15);
+      border-left: 1px dashed rgba(255, 255, 255, 0.2);
       padding-left: 2rem;
       display: flex;
       flex-direction: column;
@@ -537,15 +582,18 @@
       text-align: center;
     }
 
-    .sig-output { max-height: 50px; filter: invert(1); opacity: 0.9; }
+    .sig-output { max-height: 52px; filter: invert(1); opacity: 0.92; }
 
     @media (max-width: 768px) {
-      .hero-content { flex-direction: column; align-items: flex-start; gap: 1rem; }
+      .hero-banner { padding: 2rem 1.5rem; height: auto; }
+      .hero-content { flex-direction: column; align-items: flex-start; }
+      .trust-strip { padding: 0.85rem 1.5rem; }
       .stepper-rail { grid-template-columns: 1fr; }
+      .portal-body { padding: 2rem 1.25rem; }
       .dept-cards-grid { grid-template-columns: 1fr; }
       .grid-2, .grid-3 { grid-template-columns: 1fr; }
       .pass-body { grid-template-columns: 1fr; }
-      .pass-aside { border-left: none; border-top: 1px dashed rgba(255, 255, 255, 0.15); padding: 1.5rem 0 0 0; }
+      .pass-aside { border-left: none; border-top: 1px dashed rgba(255, 255, 255, 0.2); padding: 1.5rem 0 0 0; }
     }
   </style>
 </head>
@@ -563,16 +611,31 @@
           </div>
           <div class="brand-text">
             <h1>AURA HEALTH RESERVE</h1>
-            <p>Smart Clinical Admission &amp; Triage Suite</p>
+            <p>Clinical E-Admission &amp; Intelligent Triage</p>
           </div>
         </div>
         
         <div class="status-badge">
           <span class="dot-live"></span>
-          <span>GATEWAY ONLINE // 24/7 EMERGENCY</span>
+          <span>GATEWAY ONLINE // 24/7 EMERGENCY READY</span>
         </div>
       </div>
     </header>
+
+    <!-- Medical Trust & Staff Strip -->
+    <div class="trust-strip">
+      <div class="staff-group">
+        <div class="staff-avatars">
+          <img src="https://images.unsplash.com/photo-1622253692010-333f2da6031d?auto=format&fit=crop&w=100&q=80" alt="Attending Clinician" />
+          <img src="https://images.unsplash.com/photo-1594824813626-d62111169055?auto=format&fit=crop&w=100&q=80" alt="Specialist" />
+          <img src="https://images.unsplash.com/photo-1559839734-2b71ea197ec2?auto=format&fit=crop&w=100&q=80" alt="Triage Officer" />
+        </div>
+        <span>On-Duty Clinical Directorate: <strong>Emergency, Cardiology &amp; Trauma Specialists</strong></span>
+      </div>
+      <div>
+        <span>Accreditation: <strong style="color: var(--accent-teal);">JCI &amp; NABH Level-1 Certified</strong></span>
+      </div>
+    </div>
 
     <!-- Stepper Navigation -->
     <nav class="stepper-rail">
@@ -607,7 +670,7 @@
         <div class="step-pane active" id="pane1">
           <div class="section-lead">
             <h2>Patient Identity Record</h2>
-            <p>Enter official credentials as per government or medical registry.</p>
+            <p>Enter official credentials as per government identification or health registry.</p>
           </div>
 
           <div class="grid-2">
@@ -657,16 +720,16 @@
             </div>
             <div class="form-group">
               <label for="emergencyContact">Emergency Kin Contact <span class="req">*</span></label>
-              <input type="text" id="emergencyContact" placeholder="Name &amp; Phone" required />
+              <input type="text" id="emergencyContact" placeholder="Name &amp; Mobile Number" required />
             </div>
           </div>
         </div>
 
-        <!-- STEP 2: Triage with Department Cards -->
+        <!-- STEP 2: Triage with Department Visual Cards -->
         <div class="step-pane" id="pane2">
           <div class="section-lead">
             <h2>Specialty Selection &amp; Triage</h2>
-            <p>Select department ward and report current acute complaints.</p>
+            <p>Select your required department and report acute symptoms for clinical indexing.</p>
           </div>
 
           <!-- Dynamic Urgency Indicator -->
@@ -680,23 +743,23 @@
             </div>
           </div>
 
-          <!-- Visual Department Cards with Real Imagery -->
-          <label style="margin-bottom: 0.75rem; display: block;">Select Target Specialty Ward <span class="req">*</span></label>
+          <!-- Visual Department Cards -->
+          <label style="margin-bottom: 0.75rem; display: block;">Select Primary Specialty Ward <span class="req">*</span></label>
           <div class="dept-cards-grid">
             <div class="dept-card selected" onclick="selectDept(this, 'Cardiovascular Sciences')">
-              <img src="https://images.unsplash.com/photo-1628348068343-c6a848d2b6dd?auto=format&fit=crop&w=400&q=80" alt="Cardiology">
+              <img src="https://images.unsplash.com/photo-1628348068343-c6a848d2b6dd?auto=format&fit=crop&w=600&q=80" alt="Cardiology">
               <div class="dept-card-overlay">
                 <span class="dept-card-title">Cardiovascular Unit</span>
               </div>
             </div>
             <div class="dept-card" onclick="selectDept(this, 'Trauma & Emergency Care')">
-              <img src="https://images.unsplash.com/photo-1587351021759-3e566b6af7cc?auto=format&fit=crop&w=400&q=80" alt="Trauma">
+              <img src="https://images.unsplash.com/photo-1587351021759-3e566b6af7cc?auto=format&fit=crop&w=600&q=80" alt="Trauma">
               <div class="dept-card-overlay">
                 <span class="dept-card-title">Trauma &amp; Emergency</span>
               </div>
             </div>
             <div class="dept-card" onclick="selectDept(this, 'General Internal Medicine')">
-              <img src="https://images.unsplash.com/photo-1532938911079-1b06ac7ceec7?auto=format&fit=crop&w=400&q=80" alt="General Medicine">
+              <img src="https://images.unsplash.com/photo-1579684385127-1ef15d508118?auto=format&fit=crop&w=600&q=80" alt="General Medicine">
               <div class="dept-card-overlay">
                 <span class="dept-card-title">Internal Medicine</span>
               </div>
@@ -707,15 +770,15 @@
             <label>Pain Acuity Scale: <span id="painDisplay" style="color: var(--accent-cyan); font-weight: 800;">2</span> / 10</label>
             <input type="range" id="painRange" min="0" max="10" value="2" oninput="updatePain(this.value)" />
             <div class="slider-legend">
-              <span>0 - Mild / No Pain</span>
+              <span>0 - Mild / Negligible</span>
               <span>5 - Moderate</span>
-              <span>10 - Severe Incapacitating</span>
+              <span>10 - Incapacitating / Severe</span>
             </div>
           </div>
 
           <div class="form-group full">
             <label for="symptomsInput">Primary Symptoms &amp; Clinical Complaints <span class="req">*</span></label>
-            <textarea id="symptomsInput" rows="3" placeholder="Describe acute pains, symptoms (e.g. chest pressure, bleeding, fracture)..." oninput="evaluateTriage()" required></textarea>
+            <textarea id="symptomsInput" rows="3" placeholder="Describe symptoms (e.g. chest pressure, bleeding, fracture, shortness of breath)..." oninput="evaluateTriage()" required></textarea>
           </div>
 
           <div class="form-group full">
@@ -728,7 +791,7 @@
         <div class="step-pane" id="pane3">
           <div class="section-lead">
             <h2>Patient Consent &amp; Signature</h2>
-            <p>Sign below to authorize immediate inpatient admission and diagnostics.</p>
+            <p>Authorize hospital clinicians to commence inpatient intake and emergency diagnostics.</p>
           </div>
 
           <div class="form-group full">
@@ -764,7 +827,7 @@
         <div class="pass-header">
           <div>
             <span style="font-size: 0.75rem; letter-spacing: 0.1em; color: var(--accent-cyan); font-family: var(--font-mono); font-weight: 700;">OFFICIAL MEDICAL ACCESS TOKEN</span>
-            <h3 style="font-size: 1.3rem; font-weight: 700; color: #fff; margin-top: 2px;">AURA CLINICAL INTAKE AUTHORIZATION</h3>
+            <h3 style="font-size: 1.35rem; font-weight: 700; color: #fff; margin-top: 2px;">AURA CLINICAL INTAKE AUTHORIZATION</h3>
           </div>
           <div class="pass-barcode">
             <div class="bar"></div><div class="bar thick"></div><div class="bar short"></div><div class="bar"></div><div class="bar thick"></div><div class="bar"></div><div class="bar short"></div><div class="bar thick"></div>
@@ -810,6 +873,8 @@
                 <rect x="10" y="40" width="20" height="10" fill="#000000"/>
                 <rect x="40" y="40" width="20" height="20" fill="#000000"/>
                 <rect x="70" y="40" width="20" height="10" fill="#000000"/>
+                <rect x="40" y="70" width="10" height="20" fill="#000000"/>
+                <rect x="70" y="70" width="20" height="20" fill="#000000"/>
               </svg>
             </div>
             <div style="width: 100%; margin-top: 1rem;">
@@ -851,7 +916,7 @@
       canvas.height = rect.height * ratio;
       ctx.scale(ratio, ratio);
       
-      ctx.strokeStyle = "#06b6d4";
+      ctx.strokeStyle = "#00d8f6";
       ctx.lineWidth = 2.5;
       ctx.lineCap = "round";
 
