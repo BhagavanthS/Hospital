@@ -1,260 +1,598 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Hospital Patient Registration</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Aura Health System - Clinical Admission & Triage Engine</title>
   <style>
-    /* Reset and Accessible Typography */
-    *, *::before, *::after {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
+    :root {
+      --primary: #0284c7;
+      --primary-dark: #0369a1;
+      --primary-light: #e0f2fe;
+      --accent: #0f766e;
+      --surface: #ffffff;
+      --background: #f8fafc;
+      --text-main: #0f172a;
+      --text-muted: #64748b;
+      --border: #cbd5e1;
+      --danger: #ef4444;
+      --warning: #f59e0b;
+      --success: #10b981;
+      --radius: 10px;
+      --shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.08), 0 8px 10px -6px rgba(15, 23, 42, 0.04);
     }
 
-    body {
-      font-family: Arial, Helvetica, sans-serif;
-      line-height: 1.6;
-      color: #1a1a1a;
-      background-color: #f8fafc;
-      padding: 24px 16px;
-    }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, sans-serif; }
+    body { background-color: var(--background); color: var(--text-main); line-height: 1.5; padding: 2rem 1rem; }
 
-    /* Container */
-    .form-wrapper {
-      max-width: 600px;
+    .app-container {
+      max-width: 900px;
       margin: 0 auto;
-      background: #ffffff;
-      border: 2px solid #005a9c; /* Accessible high-contrast border */
-      border-radius: 8px;
-      padding: 24px;
+      background: var(--surface);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      border: 1px solid var(--border);
+      overflow: hidden;
     }
 
     /* Header */
-    h1 {
-      font-size: 1.5rem;
-      color: #003366;
-      margin-bottom: 8px;
-    }
-
-    p.instructions {
-      font-size: 0.95rem;
-      margin-bottom: 24px;
-      color: #333333;
-    }
-
-    /* Semantic Grouping */
-    fieldset {
-      border: 1px solid #767676;
-      border-radius: 6px;
-      padding: 16px;
-      margin-bottom: 20px;
-    }
-
-    legend {
-      font-weight: bold;
-      color: #003366;
-      padding: 0 6px;
-      font-size: 1.1rem;
-    }
-
-    .form-row {
-      margin-bottom: 16px;
-    }
-
-    .form-row:last-child {
-      margin-bottom: 0;
-    }
-
-    /* Labels & Hints */
-    label {
-      display: block;
-      font-weight: bold;
-      margin-bottom: 4px;
-      font-size: 0.95rem;
-    }
-
-    .hint {
-      display: block;
-      font-size: 0.85rem;
-      color: #555555;
-      margin-bottom: 6px;
-    }
-
-    .required-indicator {
-      color: #b30000;
-      font-weight: bold;
-    }
-
-    /* Inputs with high contrast and visible focus */
-    input[type="text"],
-    input[type="tel"],
-    input[type="date"],
-    select,
-    textarea {
-      width: 100%;
-      padding: 10px 12px;
-      font-size: 1rem;
-      border: 2px solid #4a5568;
-      border-radius: 4px;
-      background-color: #ffffff;
-      color: #1a1a1a;
-    }
-
-    /* Clear keyboard focus indicator */
-    input:focus,
-    select:focus,
-    textarea:focus,
-    button:focus {
-      outline: 3px solid #005a9c;
-      outline-offset: 2px;
-    }
-
-    /* Checkbox layout */
-    .checkbox-container {
+    header.portal-header {
+      background: linear-gradient(135deg, #075985, #0284c7);
+      color: #fff;
+      padding: 2rem;
       display: flex;
-      align-items: flex-start;
-      gap: 10px;
-      font-weight: normal;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .portal-header h1 { font-size: 1.4rem; font-weight: 700; letter-spacing: -0.02em; display: flex; align-items: center; gap: 0.5rem; }
+    .portal-header .status-tag {
+      background: rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(4px);
+      padding: 0.35rem 0.75rem;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+
+    /* Stepper */
+    .stepper {
+      display: flex;
+      justify-content: space-between;
+      background: #f1f5f9;
+      border-bottom: 1px solid var(--border);
+      padding: 1rem 2rem;
+    }
+
+    .step-item {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: var(--text-muted);
+      font-size: 0.875rem;
+      font-weight: 600;
+    }
+
+    .step-item.active { color: var(--primary-dark); }
+    .step-item.completed { color: var(--success); }
+
+    .step-number {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: #e2e8f0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.8rem;
+    }
+
+    .step-item.active .step-number { background: var(--primary); color: #fff; }
+    .step-item.completed .step-number { background: var(--success); color: #fff; }
+
+    /* Form Panels */
+    form { padding: 2rem; }
+    .step-panel { display: none; }
+    .step-panel.active { display: block; animation: fadeIn 0.25s ease-in; }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .section-title {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--text-main);
+      margin-bottom: 0.25rem;
+    }
+
+    .section-desc { font-size: 0.875rem; color: var(--text-muted); margin-bottom: 1.5rem; }
+
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; }
+    .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1.25rem; }
+
+    .form-group { display: flex; flex-direction: column; gap: 0.35rem; margin-bottom: 1rem; }
+    .form-group.span-full { grid-column: 1 / -1; }
+
+    label { font-size: 0.85rem; font-weight: 600; color: #334155; }
+    label .req { color: var(--danger); }
+
+    input, select, textarea {
+      padding: 0.7rem 0.85rem;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      font-size: 0.95rem;
+      color: var(--text-main);
+      transition: all 0.15s;
+    }
+
+    input:focus, select:focus, textarea:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px var(--primary-light);
+    }
+
+    /* Live Triage Urgency Monitor */
+    .triage-box {
+      background: var(--background);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1rem;
+      margin-bottom: 1.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .triage-indicator {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-weight: 700;
+      padding: 0.4rem 0.8rem;
+      border-radius: 6px;
+      font-size: 0.85rem;
+    }
+
+    .triage-routine { background: #ecfdf5; color: #047857; border: 1px solid #a7f3d0; }
+    .triage-priority { background: #fffbeb; color: #b45309; border: 1px solid #fde68a; }
+    .triage-emergency { background: #fef2f2; color: #b91c1c; border: 1px solid #fecaca; animation: pulse 1.8s infinite; }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.6; }
+    }
+
+    /* Digital Signature Pad */
+    .signature-area {
+      border: 1px dashed var(--border);
+      border-radius: 6px;
+      background: #fafafa;
+      position: relative;
+    }
+
+    canvas#sigCanvas {
+      width: 100%;
+      height: 140px;
+      cursor: crosshair;
+      display: block;
+    }
+
+    .sig-controls {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.5rem;
+      border-top: 1px solid #e2e8f0;
+      background: #fff;
+    }
+
+    /* Form Controls */
+    .controls {
+      display: flex;
+      justify-content: space-between;
+      border-top: 1px solid var(--border);
+      padding-top: 1.5rem;
+      margin-top: 1rem;
+    }
+
+    .btn {
+      padding: 0.75rem 1.4rem;
+      font-size: 0.95rem;
+      font-weight: 600;
+      border-radius: 6px;
       cursor: pointer;
-    }
-
-    .checkbox-container input[type="checkbox"] {
-      width: 20px;
-      height: 20px;
-      margin-top: 2px;
-      accent-color: #005a9c;
-    }
-
-    /* Accessible Submit Button */
-    button[type="submit"] {
-      background-color: #005a9c;
-      color: #ffffff;
       border: none;
-      padding: 12px 24px;
-      font-size: 1rem;
-      font-weight: bold;
-      border-radius: 4px;
-      cursor: pointer;
-      display: inline-block;
-      min-height: 48px; /* Touch-friendly size */
+      transition: all 0.15s;
     }
 
-    button[type="submit"]:hover {
-      background-color: #003e6b;
+    .btn-secondary { background: #f1f5f9; color: var(--text-muted); }
+    .btn-secondary:hover { background: #e2e8f0; }
+    .btn-primary { background: var(--primary); color: #fff; }
+    .btn-primary:hover { background: var(--primary-dark); }
+
+    /* Admission Slip Output View */
+    #admissionSlip {
+      display: none;
+      padding: 2rem;
+      background: #fff;
+    }
+
+    .slip-header {
+      border-bottom: 2px solid var(--text-main);
+      padding-bottom: 1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .qr-badge {
+      width: 80px;
+      height: 80px;
+      background: repeating-linear-gradient(45deg, #0f172a, #0f172a 6px, #ffffff 6px, #ffffff 12px);
+      border: 2px solid #000;
+    }
+
+    @media (max-width: 650px) {
+      .grid-2, .grid-3 { grid-template-columns: 1fr; }
+      .stepper { flex-direction: column; gap: 0.5rem; }
+    }
+
+    @media print {
+      body { background: none; padding: 0; }
+      .app-container { border: none; box-shadow: none; max-width: 100%; }
+      header.portal-header, .stepper, form, .controls { display: none !important; }
+      #admissionSlip { display: block !important; }
     }
   </style>
 </head>
 <body>
 
-  <main class="form-wrapper">
-    <header>
-      <h1>Patient Intake Form</h1>
-      <p class="instructions">
-        Fields marked with an asterisk (<span class="required-indicator" aria-hidden="true">*</span>) are mandatory.
-      </p>
+  <main class="app-container">
+    <!-- Header -->
+    <header class="portal-header">
+      <div>
+        <h1>
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M19 10.5h-5.5V5c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v5.5H5c-.83 0-1.5.67-1.5 1.5s.67 1.5 1.5 1.5h5.5V19c0 .83.67 1.5 1.5 1.5s1.5-.67 1.5-1.5v-5.5H19c.83 0 1.5-.67 1.5-1.5s-.67-1.5-1.5-1.5z"/></svg>
+          Metro Health Intake &amp; Triage Engine
+        </h1>
+        <p style="font-size: 0.85rem; opacity: 0.9; margin-top: 4px;">HL7 &amp; HIPAA Compliant Patient Admission System</p>
+      </div>
+      <div class="status-tag">E-Admission Active</div>
     </header>
 
-    <form action="#" method="POST" novalidate>
-
-      <!-- Personal Information -->
-      <fieldset>
-        <legend>Personal Information</legend>
-
-        <div class="form-row">
-          <label for="fullName">
-            Full Name <span class="required-indicator" aria-hidden="true">*</span>
-          </label>
-          <input 
-            type="text" 
-            id="fullName" 
-            name="fullName" 
-            required 
-            aria-required="true"
-            autocomplete="name">
-        </div>
-
-        <div class="form-row">
-          <label for="dob">
-            Date of Birth <span class="required-indicator" aria-hidden="true">*</span>
-          </label>
-          <input 
-            type="date" 
-            id="dob" 
-            name="dob" 
-            required 
-            aria-required="true"
-            aria-describedby="dob-hint">
-          <span id="dob-hint" class="hint">Format: DD/MM/YYYY</span>
-        </div>
-
-        <div class="form-row">
-          <label for="phone">
-            Mobile Number <span class="required-indicator" aria-hidden="true">*</span>
-          </label>
-          <input 
-            type="tel" 
-            id="phone" 
-            name="phone" 
-            required 
-            aria-required="true"
-            autocomplete="tel"
-            aria-describedby="phone-hint">
-          <span id="phone-hint" class="hint">Used for appointment confirmations.</span>
-        </div>
-      </fieldset>
-
-      <!-- Medical Details -->
-      <fieldset>
-        <legend>Medical Information</legend>
-
-        <div class="form-row">
-          <label for="department">
-            Department to Visit <span class="required-indicator" aria-hidden="true">*</span>
-          </label>
-          <select id="department" name="department" required aria-required="true">
-            <option value="">-- Please select a department --</option>
-            <option value="general">General Medicine</option>
-            <option value="cardiology">Cardiology</option>
-            <option value="orthopedics">Orthopedics</option>
-            <option value="pediatrics">Pediatrics</option>
-          </select>
-        </div>
-
-        <div class="form-row">
-          <label for="symptoms">Brief Reason for Visit</label>
-          <textarea 
-            id="symptoms" 
-            name="symptoms" 
-            rows="4" 
-            aria-describedby="symptoms-hint"></textarea>
-          <span id="symptoms-hint" class="hint">Mention any current symptoms, pains, or known allergies.</span>
-        </div>
-      </fieldset>
-
-      <!-- Consent -->
-      <div class="form-row">
-        <label class="checkbox-container">
-          <input 
-            type="checkbox" 
-            id="consent" 
-            name="consent" 
-            required 
-            aria-required="true">
-          <span>
-            I consent to hospital care evaluation and confirm all submitted information is accurate. 
-            <span class="required-indicator" aria-hidden="true">*</span>
-          </span>
-        </label>
+    <!-- Multi-Step Indicator -->
+    <nav class="stepper" aria-label="Progress">
+      <div class="step-item active" id="stepIndicator1">
+        <span class="step-number">1</span> Identification
       </div>
+      <div class="step-item" id="stepIndicator2">
+        <span class="step-number">2</span> Triage &amp; Symptoms
+      </div>
+      <div class="step-item" id="stepIndicator3">
+        <span class="step-number">3</span> Verification &amp; Sign
+      </div>
+    </nav>
 
-      <!-- Action -->
-      <div>
-        <button type="submit">Submit Registration</button>
+    <!-- Form Workflow -->
+    <form id="admissionForm">
+      
+      <!-- STEP 1: Personal Identification -->
+      <section class="step-panel active" id="step1">
+        <h2 class="section-title">1. Patient Demographics &amp; Vitals</h2>
+        <p class="section-desc">Ensure identity credentials match legal documents.</p>
+
+        <div class="grid-2">
+          <div class="form-group">
+            <label for="firstName">First Name <span class="req">*</span></label>
+            <input type="text" id="firstName" required placeholder="Jane" />
+          </div>
+          <div class="form-group">
+            <label for="lastName">Last Name <span class="req">*</span></label>
+            <input type="text" id="lastName" required placeholder="Doe" />
+          </div>
+        </div>
+
+        <div class="grid-3">
+          <div class="form-group">
+            <label for="dob">Date of Birth <span class="req">*</span></label>
+            <input type="date" id="dob" required />
+          </div>
+          <div class="form-group">
+            <label for="gender">Gender <span class="req">*</span></label>
+            <select id="gender" required>
+              <option value="">Select</option>
+              <option value="Female">Female</option>
+              <option value="Male">Male</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="bloodGroup">Blood Group</label>
+            <select id="bloodGroup">
+              <option value="Unknown">Unspecified</option>
+              <option value="A+">A+</option>
+              <option value="A-">A-</option>
+              <option value="B+">B+</option>
+              <option value="B-">B-</option>
+              <option value="O+">O+</option>
+              <option value="O-">O-</option>
+              <option value="AB+">AB+</option>
+              <option value="AB-">AB-</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="grid-2">
+          <div class="form-group">
+            <label for="phone">Phone Number <span class="req">*</span></label>
+            <input type="tel" id="phone" required placeholder="(+1) 555-0199" />
+          </div>
+          <div class="form-group">
+            <label for="emergencyPhone">Emergency Contact <span class="req">*</span></label>
+            <input type="tel" id="emergencyPhone" required placeholder="Relation &amp; Phone" />
+          </div>
+        </div>
+      </section>
+
+      <!-- STEP 2: Clinical Triage Assessment -->
+      <section class="step-panel" id="step2">
+        <h2 class="section-title">2. Clinical Evaluation &amp; Smart Triage</h2>
+        <p class="section-desc">Automated dynamic priority index calculations.</p>
+
+        <!-- Dynamic Urgency Banner -->
+        <div class="triage-box">
+          <div>
+            <div style="font-size: 0.8rem; text-transform: uppercase; color: var(--text-muted); font-weight: bold;">Calculated Urgency Level</div>
+            <div style="font-size: 0.9rem; color: #475569;" id="triageReason">Routine registration, standard intake procedures.</div>
+          </div>
+          <span class="triage-indicator triage-routine" id="triageBadge">ROUTINE</span>
+        </div>
+
+        <div class="grid-2">
+          <div class="form-group">
+            <label for="department">Target Specialty <span class="req">*</span></label>
+            <select id="department" required onchange="calculateTriage()">
+              <option value="General Medicine">General Medicine</option>
+              <option value="Cardiology">Cardiology</option>
+              <option value="Trauma & Orthopedics">Trauma &amp; Orthopedics</option>
+              <option value="Pediatrics">Pediatrics</option>
+              <option value="Emergency Care">Emergency Care</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="painScale">Pain Severity Level (1 - 10)</label>
+            <input type="range" id="painScale" min="0" max="10" value="1" oninput="painVal.innerText = this.value; calculateTriage();" />
+            <div style="font-size: 0.8rem; color: var(--text-muted); display: flex; justify-content: space-between;">
+              <span>Mild (0)</span><span>Score: <b id="painVal">1</b></span><span>Severe (10)</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="symptoms">Presenting Complaints &amp; Acute Symptoms <span class="req">*</span></label>
+          <textarea id="symptoms" rows="3" required placeholder="State symptoms: (e.g. chest pressure, laceration, high fever)..." oninput="calculateTriage()"></textarea>
+        </div>
+
+        <div class="form-group">
+          <label for="allergies">Known Allergies / Contradictions</label>
+          <input type="text" id="allergies" placeholder="Penicillin, Latex, NSAIDs (or type 'None')" />
+        </div>
+      </section>
+
+      <!-- STEP 3: Verification & Digital Signature -->
+      <section class="step-panel" id="step3">
+        <h2 class="section-title">3. Final Verification &amp; Signature</h2>
+        <p class="section-desc">Review your e-admission slip and sign digitally.</p>
+
+        <div style="background: #f8fafc; border: 1px solid var(--border); border-radius: 6px; padding: 1rem; margin-bottom: 1rem;">
+          <p style="font-size: 0.85rem; color: #475569;">
+            By signing below, I grant authorization to clinical staff to initiate inpatient diagnostics and emergency evaluations under hospital protocol.
+          </p>
+        </div>
+
+        <div class="form-group">
+          <label>Sign Within Box <span class="req">*</span></label>
+          <div class="signature-area">
+            <canvas id="sigCanvas"></canvas>
+            <div class="sig-controls">
+              <span style="font-size: 0.75rem; color: var(--text-muted);">Use pointer or finger to draw</span>
+              <button type="button" class="btn btn-secondary" style="padding: 0.25rem 0.6rem; font-size: 0.8rem;" onclick="clearSignature()">Clear Signature</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Step Navigation -->
+      <div class="controls">
+        <button type="button" class="btn btn-secondary" id="prevBtn" onclick="moveStep(-1)" style="visibility: hidden;">Back</button>
+        <button type="button" class="btn btn-primary" id="nextBtn" onclick="moveStep(1)">Proceed to Triage</button>
       </div>
 
     </form>
+
+    <!-- Admission Slip for Printing / Archiving -->
+    <div id="admissionSlip">
+      <div class="slip-header">
+        <div>
+          <h2>AURA HEALTH SYSTEMS - ADMISSION PASS</h2>
+          <p style="font-size: 0.85rem; color: var(--text-muted);">Generated Clinical Record Slip</p>
+        </div>
+        <div class="qr-badge" title="HL7 Intake Key"></div>
+      </div>
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 1.5rem 0;">
+        <p><strong>Patient Name:</strong> <span id="slipName"></span></p>
+        <p><strong>DOB:</strong> <span id="slipDob"></span></p>
+        <p><strong>Department:</strong> <span id="slipDept"></span></p>
+        <p><strong>Triage Level:</strong> <span id="slipTriage"></span></p>
+        <p><strong>Allergies:</strong> <span id="slipAllergies"></span></p>
+        <p><strong>Blood Group:</strong> <span id="slipBlood"></span></p>
+      </div>
+      <div style="margin-top: 1rem; border-top: 1px solid var(--border); padding-top: 1rem;">
+        <p style="font-size: 0.85rem; margin-bottom: 0.5rem;"><strong>Digital Signature Acknowledged:</strong></p>
+        <img id="slipSigImg" style="max-height: 60px; border: 1px solid #ccc; background: #fafafa;" alt="Signature Output"/>
+      </div>
+      <div style="margin-top: 2rem; display: flex; gap: 1rem;" class="no-print">
+        <button class="btn btn-primary" onclick="window.print()">Print Official Admission Slip</button>
+        <button class="btn btn-secondary" onclick="location.reload()">Start New Intake</button>
+      </div>
+    </div>
   </main>
 
+  <script>
+    let currentStep = 1;
+
+    // Canvas Signature Logic
+    const canvas = document.getElementById("sigCanvas");
+    const ctx = canvas.getContext("2d");
+    let isDrawing = false;
+    let hasSigned = false;
+
+    function resizeCanvas() {
+      const rect = canvas.getBoundingClientRect();
+      canvas.width = rect.width;
+      canvas.height = rect.height;
+      ctx.strokeStyle = "#0f172a";
+      ctx.lineWidth = 2;
+      ctx.lineCap = "round";
+    }
+    window.addEventListener("resize", resizeCanvas);
+
+    function startDraw(e) {
+      isDrawing = true;
+      hasSigned = true;
+      ctx.beginPath();
+      const { x, y } = getCoord(e);
+      ctx.moveTo(x, y);
+    }
+    function draw(e) {
+      if (!isDrawing) return;
+      const { x, y } = getCoord(e);
+      ctx.lineTo(x, y);
+      ctx.stroke();
+    }
+    function stopDraw() { isDrawing = false; }
+    function getCoord(e) {
+      const rect = canvas.getBoundingClientRect();
+      const touch = e.touches ? e.touches[0] : e;
+      return { x: touch.clientX - rect.left, y: touch.clientY - rect.top };
+    }
+
+    canvas.addEventListener("mousedown", startDraw);
+    canvas.addEventListener("mousemove", draw);
+    window.addEventListener("mouseup", stopDraw);
+    canvas.addEventListener("touchstart", (e) => { e.preventDefault(); startDraw(e); });
+    canvas.addEventListener("touchmove", (e) => { e.preventDefault(); draw(e); });
+    canvas.addEventListener("touchend", stopDraw);
+
+    function clearSignature() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      hasSigned = false;
+    }
+
+    // Step Movement & Validation
+    function moveStep(delta) {
+      if (delta === 1 && !validateStep(currentStep)) return;
+
+      currentStep += delta;
+
+      document.querySelectorAll(".step-panel").forEach((panel, idx) => {
+        panel.classList.toggle("active", idx + 1 === currentStep);
+      });
+
+      for (let i = 1; i <= 3; i++) {
+        const item = document.getElementById(`stepIndicator${i}`);
+        item.classList.toggle("active", i === currentStep);
+        item.classList.toggle("completed", i < currentStep);
+      }
+
+      document.getElementById("prevBtn").style.visibility = currentStep > 1 ? "visible" : "hidden";
+
+      if (currentStep === 3) {
+        document.getElementById("nextBtn").innerText = "Finalize & Submit";
+        setTimeout(resizeCanvas, 50); // Bind layout size
+      } else {
+        document.getElementById("nextBtn").innerText = "Proceed";
+      }
+
+      if (currentStep > 3) {
+        submitIntake();
+      }
+    }
+
+    function validateStep(step) {
+      if (step === 1) {
+        const inputs = [document.getElementById("firstName"), document.getElementById("lastName"), document.getElementById("dob"), document.getElementById("phone")];
+        for (let el of inputs) {
+          if (!el.value.trim()) {
+            el.focus();
+            alert(`Please provide a valid ${el.previousElementSibling.innerText}`);
+            return false;
+          }
+        }
+      } else if (step === 2) {
+        const sym = document.getElementById("symptoms");
+        if (!sym.value.trim()) {
+          sym.focus();
+          alert("Clinical summary or symptoms required.");
+          return false;
+        }
+      } else if (step === 3) {
+        if (!hasSigned) {
+          alert("Please sign your intake document prior to submission.");
+          return false;
+        }
+      }
+      return true;
+    }
+
+    // Smart Triage Calculator
+    function calculateTriage() {
+      const pain = parseInt(document.getElementById("painScale").value, 10);
+      const dept = document.getElementById("department").value;
+      const text = document.getElementById("symptoms").value.toLowerCase();
+
+      const badge = document.getElementById("triageBadge");
+      const reason = document.getElementById("triageReason");
+
+      const emergencyKeywords = ["chest pain", "shortness of breath", "unconscious", "stroke", "bleeding", "cardiac", "fracture"];
+      const isRedFlag = emergencyKeywords.some(kw => text.includes(kw));
+
+      if (isRedFlag || pain >= 8 || dept === "Emergency Care") {
+        badge.className = "triage-indicator triage-emergency";
+        badge.innerText = "EMERGENCY (LEVEL 1)";
+        reason.innerText = "High-priority clinical triage alert detected. Rapid intake.";
+      } else if (pain >= 5 || dept === "Cardiology") {
+        badge.className = "triage-indicator triage-priority";
+        badge.innerText = "URGENT (LEVEL 2)";
+        reason.innerText = "Elevated pain index or critical department assigned.";
+      } else {
+        badge.className = "triage-indicator triage-routine";
+        badge.innerText = "ROUTINE (LEVEL 3)";
+        reason.innerText = "Stable clinical vitals, outpatient routine queue.";
+      }
+    }
+
+    // Finalize Intake View
+    function submitIntake() {
+      document.querySelector(".stepper").style.display = "none";
+      document.getElementById("admissionForm").style.display = "none";
+
+      document.getElementById("slipName").innerText = `${document.getElementById("firstName").value} ${document.getElementById("lastName").value}`;
+      document.getElementById("slipDob").innerText = document.getElementById("dob").value;
+      document.getElementById("slipDept").innerText = document.getElementById("department").value;
+      document.getElementById("slipTriage").innerText = document.getElementById("triageBadge").innerText;
+      document.getElementById("slipAllergies").innerText = document.getElementById("allergies").value || "None Reported";
+      document.getElementById("slipBlood").innerText = document.getElementById("bloodGroup").value;
+
+      document.getElementById("slipSigImg").src = canvas.toDataURL();
+      document.getElementById("admissionSlip").style.display = "block";
+    }
+  </script>
 </body>
 </html>
