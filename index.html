@@ -1,1 +1,1010 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AURA Health Reserve | Clinical Admission &amp; Triage</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+      
+      --bg-base: #060913;
+      --bg-surface: #0e1526;
+      --bg-surface-elevated: #162035;
+      --bg-input: #090e1a;
+      
+      --accent-cyan: #06b6d4;
+      --accent-teal: #14b8a6;
+      --accent-blue: #3b82f6;
+      --accent-purple: #8b5cf6;
+      
+      --text-primary: #f8fafc;
+      --text-secondary: #94a3b8;
+      --text-muted: #64748b;
+      
+      --border-subtle: rgba(255, 255, 255, 0.08);
+      --border-focus: #06b6d4;
+      --border-glow: 0 0 0 3px rgba(6, 182, 212, 0.25);
+      
+      --danger: #f43f5e;
+      --danger-bg: rgba(244, 63, 94, 0.15);
+      --warning: #fbbf24;
+      --warning-bg: rgba(251, 191, 36, 0.15);
+      --success: #10b981;
+      --success-bg: rgba(16, 185, 129, 0.15);
+      
+      --radius-sm: 8px;
+      --radius-md: 14px;
+      --radius-lg: 20px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background-color: var(--bg-base);
+      background-image: 
+        radial-gradient(circle at 15% 15%, rgba(6, 182, 212, 0.12) 0%, transparent 45%),
+        radial-gradient(circle at 85% 85%, rgba(139, 92, 246, 0.1) 0%, transparent 50%);
+      color: var(--text-primary);
+      font-family: var(--font-sans);
+      min-height: 100vh;
+      padding: 2.5rem 1.5rem;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .shell {
+      width: 100%;
+      max-width: 980px;
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.7), 0 0 80px -20px rgba(6, 182, 212, 0.2);
+      backdrop-filter: blur(20px);
+      overflow: hidden;
+      position: relative;
+    }
+
+    /* Ambient top line */
+    .shell::after {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, #3b82f6, var(--accent-cyan), var(--accent-teal), var(--accent-purple));
+    }
+
+    /* Visual Hero Banner with Image */
+    .hero-banner {
+      position: relative;
+      height: 180px;
+      background-image: url('https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?auto=format&fit=crop&w=1400&q=80');
+      background-size: cover;
+      background-position: center 35%;
+      display: flex;
+      align-items: flex-end;
+      padding: 2rem 2.5rem;
+    }
+
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(6, 9, 19, 0.4) 0%, rgba(14, 21, 38, 0.95) 100%);
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      width: 100%;
+    }
+
+    .brand-group {
+      display: flex;
+      align-items: center;
+      gap: 1.25rem;
+    }
+
+    .brand-avatar {
+      width: 56px;
+      height: 56px;
+      border-radius: var(--radius-md);
+      background: linear-gradient(135deg, var(--accent-cyan), var(--accent-blue));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 0 25px rgba(6, 182, 212, 0.4);
+    }
+
+    .brand-avatar svg { width: 30px; height: 30px; fill: #ffffff; }
+
+    .brand-text h1 {
+      font-size: 1.5rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: #ffffff;
+      text-shadow: 0 2px 8px rgba(0,0,0,0.5);
+    }
+
+    .brand-text p {
+      font-size: 0.85rem;
+      color: var(--accent-cyan);
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      font-family: var(--font-mono);
+      font-weight: 600;
+    }
+
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: rgba(16, 185, 129, 0.15);
+      border: 1px solid rgba(16, 185, 129, 0.35);
+      color: #34d399;
+      padding: 0.45rem 1rem;
+      border-radius: 9999px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      font-family: var(--font-mono);
+      backdrop-filter: blur(8px);
+    }
+
+    .dot-live {
+      width: 8px;
+      height: 8px;
+      background: #10b981;
+      border-radius: 50%;
+      box-shadow: 0 0 10px #10b981;
+      animation: flash 2s infinite ease-in-out;
+    }
+
+    @keyframes flash {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.3; transform: scale(0.85); }
+    }
+
+    /* Stepper Navigation */
+    .stepper-rail {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      background: rgba(0, 0, 0, 0.35);
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .step-tab {
+      padding: 1.25rem 2rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      border-bottom: 3px solid transparent;
+      color: var(--text-muted);
+      transition: all 0.25s ease;
+    }
+
+    .step-tab.active {
+      border-bottom-color: var(--accent-cyan);
+      color: var(--text-primary);
+      background: rgba(6, 182, 212, 0.04);
+    }
+
+    .step-tab.completed { color: var(--accent-teal); }
+
+    .step-num {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border-subtle);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.8rem;
+      font-weight: 700;
+      font-family: var(--font-mono);
+    }
+
+    .step-tab.active .step-num {
+      background: linear-gradient(135deg, var(--accent-cyan), var(--accent-blue));
+      color: #fff;
+      border-color: var(--accent-cyan);
+      box-shadow: 0 0 15px rgba(6, 182, 212, 0.4);
+    }
+
+    .step-tab.completed .step-num {
+      background: var(--accent-teal);
+      color: #fff;
+      border-color: var(--accent-teal);
+    }
+
+    .step-info { display: flex; flex-direction: column; }
+    .step-phase { font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.08em; opacity: 0.6; font-family: var(--font-mono); }
+    .step-name { font-size: 0.9rem; font-weight: 600; }
+
+    /* Form Body */
+    .portal-body { padding: 2.5rem; }
+
+    .step-pane { display: none; animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+    .step-pane.active { display: block; }
+
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .section-lead { margin-bottom: 2rem; }
+    .section-lead h2 { font-size: 1.35rem; font-weight: 700; color: #fff; }
+    .section-lead p { color: var(--text-secondary); font-size: 0.9rem; margin-top: 0.3rem; }
+
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+
+    .form-group { display: flex; flex-direction: column; gap: 0.5rem; margin-bottom: 1.5rem; }
+    .form-group.full { grid-column: 1 / -1; }
+
+    label {
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      font-family: var(--font-mono);
+    }
+
+    .req { color: var(--danger); }
+
+    input, select, textarea {
+      width: 100%;
+      background: var(--bg-input);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-sm);
+      padding: 0.85rem 1.1rem;
+      font-size: 0.95rem;
+      color: var(--text-primary);
+      font-family: var(--font-sans);
+      outline: none;
+      transition: all 0.2s ease;
+    }
+
+    input:focus, select:focus, textarea:focus {
+      border-color: var(--border-focus);
+      box-shadow: var(--border-glow);
+      background: rgba(12, 19, 34, 0.95);
+    }
+
+    /* Department Cards Selection with Images */
+    .dept-cards-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .dept-card {
+      position: relative;
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      border: 2px solid var(--border-subtle);
+      background: var(--bg-surface-elevated);
+      cursor: pointer;
+      transition: all 0.25s ease;
+      height: 120px;
+    }
+
+    .dept-card img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.4s ease;
+    }
+
+    .dept-card:hover img { transform: scale(1.08); }
+
+    .dept-card-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(6, 9, 19, 0.2) 0%, rgba(14, 21, 38, 0.9) 80%);
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 0.85rem;
+      z-index: 2;
+    }
+
+    .dept-card-title {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    .dept-card.selected {
+      border-color: var(--accent-cyan);
+      box-shadow: 0 0 20px rgba(6, 182, 212, 0.35);
+    }
+
+    .dept-card.selected .dept-card-overlay {
+      background: linear-gradient(180deg, rgba(6, 182, 212, 0.1) 0%, rgba(6, 182, 212, 0.5) 100%);
+    }
+
+    /* Live Triage Urgency Monitor */
+    .triage-monitor {
+      background: var(--bg-surface-elevated);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .triage-monitor::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 0; bottom: 0;
+      width: 5px;
+      background: var(--success);
+      transition: background 0.3s ease;
+    }
+
+    .triage-monitor.state-emergency::before { background: var(--danger); }
+    .triage-monitor.state-urgent::before { background: var(--warning); }
+    .triage-monitor.state-routine::before { background: var(--success); }
+
+    .triage-pill {
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      font-weight: 800;
+      padding: 0.5rem 1rem;
+      border-radius: var(--radius-sm);
+      letter-spacing: 0.05em;
+    }
+
+    .pill-routine { background: var(--success-bg); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.3); }
+    .pill-urgent { background: var(--warning-bg); color: #fcd34d; border: 1px solid rgba(251, 191, 36, 0.3); }
+    .pill-emergency {
+      background: var(--danger-bg);
+      color: #fda4af;
+      border: 1px solid rgba(244, 63, 94, 0.4);
+      box-shadow: 0 0 20px rgba(244, 63, 94, 0.25);
+    }
+
+    /* Slider */
+    input[type="range"] {
+      -webkit-appearance: none;
+      height: 6px;
+      background: var(--bg-surface-elevated);
+      border-radius: 9999px;
+      border: none;
+      padding: 0;
+    }
+
+    input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: var(--accent-cyan);
+      box-shadow: 0 0 10px var(--accent-cyan);
+      cursor: pointer;
+      border: 2px solid #fff;
+    }
+
+    .slider-legend {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      font-family: var(--font-mono);
+      margin-top: 0.5rem;
+    }
+
+    /* Signature Box */
+    .signature-card {
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      background: var(--bg-surface-elevated);
+      overflow: hidden;
+    }
+
+    .signature-canvas-container {
+      background: #070c16;
+      height: 150px;
+      position: relative;
+    }
+
+    canvas#signaturePad {
+      width: 100%;
+      height: 100%;
+      display: block;
+      cursor: crosshair;
+    }
+
+    .sig-actions {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.85rem 1.25rem;
+      border-top: 1px solid var(--border-subtle);
+      background: rgba(0,0,0,0.25);
+    }
+
+    /* Buttons */
+    .btn-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 3rem;
+      padding-top: 2rem;
+      border-top: 1px solid var(--border-subtle);
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      padding: 0.9rem 1.8rem;
+      font-size: 0.9rem;
+      font-weight: 700;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      border: none;
+      transition: all 0.2s ease;
+      font-family: var(--font-sans);
+    }
+
+    .btn-ghost {
+      background: transparent;
+      color: var(--text-secondary);
+      border: 1px solid var(--border-subtle);
+    }
+
+    .btn-ghost:hover {
+      color: #fff;
+      background: rgba(255, 255, 255, 0.05);
+      border-color: rgba(255, 255, 255, 0.2);
+    }
+
+    .btn-action {
+      background: linear-gradient(135deg, var(--accent-cyan), var(--accent-blue));
+      color: #ffffff;
+      box-shadow: 0 4px 25px rgba(6, 182, 212, 0.35);
+    }
+
+    .btn-action:hover {
+      box-shadow: 0 6px 30px rgba(6, 182, 212, 0.55);
+      transform: translateY(-1px);
+    }
+
+    /* Admission Boarding Pass View */
+    #admissionPassView {
+      display: none;
+      padding: 2.5rem;
+    }
+
+    .pass-container {
+      background: #0b1324;
+      border: 1px solid rgba(6, 182, 212, 0.4);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      box-shadow: 0 20px 45px rgba(0, 0, 0, 0.5);
+    }
+
+    .pass-header {
+      background: linear-gradient(90deg, #0e1e3b, #1b2f56);
+      padding: 1.75rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px dashed rgba(255, 255, 255, 0.15);
+    }
+
+    .pass-barcode { display: flex; gap: 3px; height: 40px; align-items: flex-end; }
+    .bar { background: #fff; width: 2px; height: 100%; }
+    .bar.thick { width: 5px; }
+    .bar.short { height: 70%; }
+
+    .pass-body {
+      padding: 2.5rem 2rem;
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 2.5rem;
+    }
+
+    .data-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; }
+    .data-cell span { display: block; font-size: 0.72rem; text-transform: uppercase; font-family: var(--font-mono); color: var(--text-muted); }
+    .data-cell strong { display: block; font-size: 1.1rem; color: #fff; font-weight: 600; margin-top: 0.2rem; }
+
+    .pass-aside {
+      border-left: 1px dashed rgba(255, 255, 255, 0.15);
+      padding-left: 2rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: center;
+      text-align: center;
+    }
+
+    .sig-output { max-height: 50px; filter: invert(1); opacity: 0.9; }
+
+    @media (max-width: 768px) {
+      .hero-content { flex-direction: column; align-items: flex-start; gap: 1rem; }
+      .stepper-rail { grid-template-columns: 1fr; }
+      .dept-cards-grid { grid-template-columns: 1fr; }
+      .grid-2, .grid-3 { grid-template-columns: 1fr; }
+      .pass-body { grid-template-columns: 1fr; }
+      .pass-aside { border-left: none; border-top: 1px dashed rgba(255, 255, 255, 0.15); padding: 1.5rem 0 0 0; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="shell">
+    
+    <!-- Hero Banner with Hospital Photography -->
+    <header class="hero-banner">
+      <div class="hero-overlay"></div>
+      <div class="hero-content">
+        <div class="brand-group">
+          <div class="brand-avatar">
+            <svg viewBox="0 0 24 24"><path d="M19 10.5h-5.5V5c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v5.5H5c-.83 0-1.5.67-1.5 1.5s.67 1.5 1.5 1.5h5.5V19c0 .83.67 1.5 1.5 1.5s1.5-.67 1.5-1.5v-5.5H19c.83 0 1.5-.67 1.5-1.5s-.67-1.5-1.5-1.5z"/></svg>
+          </div>
+          <div class="brand-text">
+            <h1>AURA HEALTH RESERVE</h1>
+            <p>Smart Clinical Admission &amp; Triage Suite</p>
+          </div>
+        </div>
+        
+        <div class="status-badge">
+          <span class="dot-live"></span>
+          <span>GATEWAY ONLINE // 24/7 EMERGENCY</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- Stepper Navigation -->
+    <nav class="stepper-rail">
+      <div class="step-tab active" id="tab1">
+        <div class="step-num">01</div>
+        <div class="step-info">
+          <span class="step-phase">Phase 01</span>
+          <span class="step-name">Patient Bio</span>
+        </div>
+      </div>
+      <div class="step-tab" id="tab2">
+        <div class="step-num">02</div>
+        <div class="step-info">
+          <span class="step-phase">Phase 02</span>
+          <span class="step-name">Triage &amp; Specialty</span>
+        </div>
+      </div>
+      <div class="step-tab" id="tab3">
+        <div class="step-num">03</div>
+        <div class="step-info">
+          <span class="step-phase">Phase 03</span>
+          <span class="step-name">Sign &amp; Issue</span>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Body / Form Fields -->
+    <div class="portal-body">
+      <form id="admissionForm" onsubmit="return false;">
+        
+        <!-- STEP 1: Bio -->
+        <div class="step-pane active" id="pane1">
+          <div class="section-lead">
+            <h2>Patient Identity Record</h2>
+            <p>Enter official credentials as per government or medical registry.</p>
+          </div>
+
+          <div class="grid-2">
+            <div class="form-group">
+              <label for="fname">First Name <span class="req">*</span></label>
+              <input type="text" id="fname" placeholder="Karthik" required />
+            </div>
+            <div class="form-group">
+              <label for="lname">Last Name <span class="req">*</span></label>
+              <input type="text" id="lname" placeholder="Raman" required />
+            </div>
+          </div>
+
+          <div class="grid-3">
+            <div class="form-group">
+              <label for="dob">Date of Birth <span class="req">*</span></label>
+              <input type="date" id="dob" required />
+            </div>
+            <div class="form-group">
+              <label for="gender">Gender <span class="req">*</span></label>
+              <select id="gender" required>
+                <option value="" disabled selected>Select</option>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="bloodType">Blood Group</label>
+              <select id="bloodType">
+                <option value="A+">A Positive (A+)</option>
+                <option value="A-">A Negative (A-)</option>
+                <option value="B+">B Positive (B+)</option>
+                <option value="B-">B Negative (B-)</option>
+                <option value="O+" selected>O Positive (O+)</option>
+                <option value="O-">O Negative (O-)</option>
+                <option value="AB+">AB Positive (AB+)</option>
+                <option value="AB-">AB Negative (AB-)</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="grid-2">
+            <div class="form-group">
+              <label for="phone">Phone Number <span class="req">*</span></label>
+              <input type="tel" id="phone" placeholder="+91 98400 12345" required />
+            </div>
+            <div class="form-group">
+              <label for="emergencyContact">Emergency Kin Contact <span class="req">*</span></label>
+              <input type="text" id="emergencyContact" placeholder="Name &amp; Phone" required />
+            </div>
+          </div>
+        </div>
+
+        <!-- STEP 2: Triage with Department Cards -->
+        <div class="step-pane" id="pane2">
+          <div class="section-lead">
+            <h2>Specialty Selection &amp; Triage</h2>
+            <p>Select department ward and report current acute complaints.</p>
+          </div>
+
+          <!-- Dynamic Urgency Indicator -->
+          <div class="triage-monitor state-routine" id="triageBox">
+            <div>
+              <span style="font-size: 0.72rem; color: var(--text-muted); text-transform: uppercase; font-family: var(--font-mono); font-weight: 700;">LIVE ACUITY ASSESSMENT</span>
+              <p id="triageDesc" style="font-size: 0.95rem; font-weight: 600; margin-top: 0.25rem;">Routine queue. Standard outpatient or day care admission.</p>
+            </div>
+            <div class="triage-pill pill-routine" id="triageBadge">
+              <span id="triageText">LEVEL 3 // ROUTINE</span>
+            </div>
+          </div>
+
+          <!-- Visual Department Cards with Real Imagery -->
+          <label style="margin-bottom: 0.75rem; display: block;">Select Target Specialty Ward <span class="req">*</span></label>
+          <div class="dept-cards-grid">
+            <div class="dept-card selected" onclick="selectDept(this, 'Cardiovascular Sciences')">
+              <img src="https://images.unsplash.com/photo-1628348068343-c6a848d2b6dd?auto=format&fit=crop&w=400&q=80" alt="Cardiology">
+              <div class="dept-card-overlay">
+                <span class="dept-card-title">Cardiovascular Unit</span>
+              </div>
+            </div>
+            <div class="dept-card" onclick="selectDept(this, 'Trauma & Emergency Care')">
+              <img src="https://images.unsplash.com/photo-1587351021759-3e566b6af7cc?auto=format&fit=crop&w=400&q=80" alt="Trauma">
+              <div class="dept-card-overlay">
+                <span class="dept-card-title">Trauma &amp; Emergency</span>
+              </div>
+            </div>
+            <div class="dept-card" onclick="selectDept(this, 'General Internal Medicine')">
+              <img src="https://images.unsplash.com/photo-1532938911079-1b06ac7ceec7?auto=format&fit=crop&w=400&q=80" alt="General Medicine">
+              <div class="dept-card-overlay">
+                <span class="dept-card-title">Internal Medicine</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Pain Acuity Scale: <span id="painDisplay" style="color: var(--accent-cyan); font-weight: 800;">2</span> / 10</label>
+            <input type="range" id="painRange" min="0" max="10" value="2" oninput="updatePain(this.value)" />
+            <div class="slider-legend">
+              <span>0 - Mild / No Pain</span>
+              <span>5 - Moderate</span>
+              <span>10 - Severe Incapacitating</span>
+            </div>
+          </div>
+
+          <div class="form-group full">
+            <label for="symptomsInput">Primary Symptoms &amp; Clinical Complaints <span class="req">*</span></label>
+            <textarea id="symptomsInput" rows="3" placeholder="Describe acute pains, symptoms (e.g. chest pressure, bleeding, fracture)..." oninput="evaluateTriage()" required></textarea>
+          </div>
+
+          <div class="form-group full">
+            <label for="allergiesInput">Known Allergies / Sensitivities</label>
+            <input type="text" id="allergiesInput" placeholder="Penicillin, NSAIDs, Peanuts (or type 'None')" />
+          </div>
+        </div>
+
+        <!-- STEP 3: Sign & Complete -->
+        <div class="step-pane" id="pane3">
+          <div class="section-lead">
+            <h2>Patient Consent &amp; Signature</h2>
+            <p>Sign below to authorize immediate inpatient admission and diagnostics.</p>
+          </div>
+
+          <div class="form-group full">
+            <label>Digital Signature Pad <span class="req">*</span></label>
+            <div class="signature-card">
+              <div class="signature-canvas-container">
+                <canvas id="signaturePad"></canvas>
+              </div>
+              <div class="sig-actions">
+                <span style="font-size: 0.75rem; color: var(--text-muted); font-family: var(--font-mono);">DRAW USING TOUCH SCREEN OR MOUSE</span>
+                <button type="button" class="btn btn-ghost" style="padding: 0.35rem 0.75rem; font-size: 0.75rem;" onclick="resetSignature()">Clear Pad</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Action Controls -->
+        <div class="btn-row">
+          <button type="button" class="btn btn-ghost" id="backBtn" onclick="navigateStep(-1)" style="visibility: hidden;">
+            &larr; Previous Phase
+          </button>
+          <button type="button" class="btn btn-action" id="forwardBtn" onclick="navigateStep(1)">
+            <span>Proceed to Triage</span> &rarr;
+          </button>
+        </div>
+
+      </form>
+    </div>
+
+    <!-- Final Admission Token Pass View -->
+    <section id="admissionPassView">
+      <div class="pass-container">
+        <div class="pass-header">
+          <div>
+            <span style="font-size: 0.75rem; letter-spacing: 0.1em; color: var(--accent-cyan); font-family: var(--font-mono); font-weight: 700;">OFFICIAL MEDICAL ACCESS TOKEN</span>
+            <h3 style="font-size: 1.3rem; font-weight: 700; color: #fff; margin-top: 2px;">AURA CLINICAL INTAKE AUTHORIZATION</h3>
+          </div>
+          <div class="pass-barcode">
+            <div class="bar"></div><div class="bar thick"></div><div class="bar short"></div><div class="bar"></div><div class="bar thick"></div><div class="bar"></div><div class="bar short"></div><div class="bar thick"></div>
+          </div>
+        </div>
+
+        <div class="pass-body">
+          <div class="data-grid">
+            <div class="data-cell">
+              <span>Patient Full Name</span>
+              <strong id="cardName">Karthik Raman</strong>
+            </div>
+            <div class="data-cell">
+              <span>Date of Birth</span>
+              <strong id="cardDob">2008-05-14</strong>
+            </div>
+            <div class="data-cell">
+              <span>Assigned Ward</span>
+              <strong id="cardDept">Cardiovascular Sciences</strong>
+            </div>
+            <div class="data-cell">
+              <span>Triage Level</span>
+              <strong id="cardTriage" style="color: var(--accent-cyan);">ROUTINE (LEVEL 3)</strong>
+            </div>
+            <div class="data-cell">
+              <span>Blood Group</span>
+              <strong id="cardBlood">O Positive (O+)</strong>
+            </div>
+            <div class="data-cell">
+              <span>Sensitivities</span>
+              <strong id="cardAllergies">None</strong>
+            </div>
+          </div>
+
+          <div class="pass-aside">
+            <div style="width: 85px; height: 85px; background: #fff; padding: 6px; border-radius: 6px;">
+              <svg viewBox="0 0 100 100" width="100%" height="100%">
+                <rect width="100" height="100" fill="#ffffff"/>
+                <path d="M0,0 h30 v30 h-30 z M10,10 h10 v10 h-10 z" fill="#000000"/>
+                <path d="M70,0 h30 v30 h-30 z M80,10 h10 v10 h-10 z" fill="#000000"/>
+                <path d="M0,70 h30 v30 h-30 z M10,80 h10 v10 h-10 z" fill="#000000"/>
+                <rect x="40" y="10" width="10" height="20" fill="#000000"/>
+                <rect x="10" y="40" width="20" height="10" fill="#000000"/>
+                <rect x="40" y="40" width="20" height="20" fill="#000000"/>
+                <rect x="70" y="40" width="20" height="10" fill="#000000"/>
+              </svg>
+            </div>
+            <div style="width: 100%; margin-top: 1rem;">
+              <span style="font-size: 0.65rem; color: var(--text-muted); font-family: var(--font-mono); display: block; margin-bottom: 4px;">EXECUTED SIGNATURE</span>
+              <img id="cardSig" class="sig-output" alt="Signature Verification" />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div style="margin-top: 2rem; display: flex; gap: 1rem; justify-content: flex-end;">
+        <button class="btn btn-ghost" onclick="location.reload()">Start New Intake</button>
+        <button class="btn btn-action" onclick="window.print()">Print Official Pass</button>
+      </div>
+    </section>
+
+  </div>
+
+  <script>
+    let activeStep = 1;
+    let selectedDepartment = "Cardiovascular Sciences";
+    let signatureDrawn = false;
+    let canvas, ctx;
+
+    function selectDept(element, deptName) {
+      document.querySelectorAll('.dept-card').forEach(c => c.classList.remove('selected'));
+      element.classList.add('selected');
+      selectedDepartment = deptName;
+      evaluateTriage();
+    }
+
+    function setupCanvas() {
+      canvas = document.getElementById('signaturePad');
+      ctx = canvas.getContext('2d');
+      const ratio = window.devicePixelRatio || 1;
+      const rect = canvas.getBoundingClientRect();
+      
+      canvas.width = rect.width * ratio;
+      canvas.height = rect.height * ratio;
+      ctx.scale(ratio, ratio);
+      
+      ctx.strokeStyle = "#06b6d4";
+      ctx.lineWidth = 2.5;
+      ctx.lineCap = "round";
+
+      let drawing = false;
+
+      function getPos(e) {
+        const r = canvas.getBoundingClientRect();
+        const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+        const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+        return { x: clientX - r.left, y: clientY - r.top };
+      }
+
+      function start(e) {
+        drawing = true;
+        signatureDrawn = true;
+        const p = getPos(e);
+        ctx.beginPath();
+        ctx.moveTo(p.x, p.y);
+      }
+
+      function draw(e) {
+        if (!drawing) return;
+        const p = getPos(e);
+        ctx.lineTo(p.x, p.y);
+        ctx.stroke();
+      }
+
+      function stop() { drawing = false; }
+
+      canvas.addEventListener('mousedown', start);
+      canvas.addEventListener('mousemove', draw);
+      window.addEventListener('mouseup', stop);
+      canvas.addEventListener('touchstart', (e) => { e.preventDefault(); start(e); }, { passive: false });
+      canvas.addEventListener('touchmove', (e) => { e.preventDefault(); draw(e); }, { passive: false });
+      canvas.addEventListener('touchend', stop);
+    }
+
+    function resetSignature() {
+      const ratio = window.devicePixelRatio || 1;
+      ctx.clearRect(0, 0, canvas.width / ratio, canvas.height / ratio);
+      signatureDrawn = false;
+    }
+
+    function updatePain(val) {
+      document.getElementById('painDisplay').innerText = val;
+      evaluateTriage();
+    }
+
+    function evaluateTriage() {
+      const pain = parseInt(document.getElementById('painRange').value, 10);
+      const text = document.getElementById('symptomsInput').value.toLowerCase();
+      const box = document.getElementById('triageBox');
+      const pill = document.getElementById('triageBadge');
+      const textSpan = document.getElementById('triageText');
+      const desc = document.getElementById('triageDesc');
+
+      const redFlags = ['chest', 'stroke', 'unconscious', 'breath', 'cardiac', 'bleed', 'fracture'];
+      const hasRedFlag = redFlags.some(flag => text.includes(flag));
+
+      box.className = 'triage-monitor';
+      pill.className = 'triage-pill';
+
+      if (hasRedFlag || pain >= 8 || selectedDepartment.includes('Emergency')) {
+        box.classList.add('state-emergency');
+        pill.classList.add('pill-emergency');
+        textSpan.innerText = 'LEVEL 1 // CRITICAL EMERGENCY';
+        desc.innerText = 'Immediate medical mobilization protocol activated. Rapid intake.';
+      } else if (pain >= 5 || selectedDepartment.includes('Cardiovascular')) {
+        box.classList.add('state-urgent');
+        pill.classList.add('pill-urgent');
+        textSpan.innerText = 'LEVEL 2 // PRIORITY URGENT';
+        desc.innerText = 'Expedited clinical examination recommended. Semi-acute status.';
+      } else {
+        box.classList.add('state-routine');
+        pill.classList.add('pill-routine');
+        textSpan.innerText = 'LEVEL 3 // ROUTINE';
+        desc.innerText = 'Routine queue. Standard outpatient or day care admission.';
+      }
+    }
+
+    function navigateStep(direction) {
+      if (direction === 1 && !validateCurrentStep(activeStep)) return;
+
+      activeStep += direction;
+
+      document.querySelectorAll('.step-pane').forEach((pane, i) => {
+        pane.classList.toggle('active', i + 1 === activeStep);
+      });
+
+      for (let i = 1; i <= 3; i++) {
+        const tab = document.getElementById(`tab${i}`);
+        tab.classList.toggle('active', i === activeStep);
+        tab.classList.toggle('completed', i < activeStep);
+      }
+
+      document.getElementById('backBtn').style.visibility = activeStep > 1 ? 'visible' : 'hidden';
+
+      const forwardBtn = document.getElementById('forwardBtn');
+      if (activeStep === 2) {
+        forwardBtn.innerHTML = `<span>Proceed to Signature</span> &rarr;`;
+      } else if (activeStep === 3) {
+        forwardBtn.innerHTML = `<span>Authorize &amp; Generate Pass</span> &check;`;
+        setTimeout(setupCanvas, 100);
+      } else {
+        forwardBtn.innerHTML = `<span>Proceed to Triage</span> &rarr;`;
+      }
+
+      if (activeStep > 3) {
+        generatePass();
+      }
+    }
+
+    function validateCurrentStep(step) {
+      if (step === 1) {
+        const reqs = ['fname', 'lname', 'dob', 'gender', 'phone', 'emergencyContact'];
+        for (let id of reqs) {
+          const el = document.getElementById(id);
+          if (!el.value.trim()) { el.focus(); return false; }
+        }
+      } else if (step === 2) {
+        const sym = document.getElementById('symptomsInput');
+        if (!sym.value.trim()) { sym.focus(); return false; }
+      } else if (step === 3) {
+        if (!signatureDrawn) {
+          alert('Please provide your digital signature to proceed.');
+          return false;
+        }
+      }
+      return true;
+    }
+
+    function generatePass() {
+      document.querySelector('.stepper-rail').style.display = 'none';
+      document.getElementById('admissionForm').style.display = 'none';
+
+      document.getElementById('cardName').innerText = `${document.getElementById('fname').value} ${document.getElementById('lname').value}`;
+      document.getElementById('cardDob').innerText = document.getElementById('dob').value;
+      document.getElementById('cardDept').innerText = selectedDepartment;
+      
+      const badge = document.getElementById('triageText').innerText;
+      const cardTriage = document.getElementById('cardTriage');
+      cardTriage.innerText = badge;
+      
+      if (badge.includes('CRITICAL')) cardTriage.style.color = 'var(--danger)';
+      else if (badge.includes('PRIORITY')) cardTriage.style.color = 'var(--warning)';
+      else cardTriage.style.color = 'var(--accent-cyan)';
+
+      document.getElementById('cardBlood').innerText = document.getElementById('bloodType').value;
+      document.getElementById('cardAllergies').innerText = document.getElementById('allergiesInput').value || 'None Reported';
+      document.getElementById('cardSig').src = canvas.toDataURL();
+      document.getElementById('admissionPassView').style.display = 'block';
+    }
+  </script>
+</body>
+</html>
 
