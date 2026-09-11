@@ -1,39 +1,263 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Hospital Inpatient Admission Portal</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hospital Patient Registration</title>
   <style>
-    :root {
-      --primary: #0d5c75;
-      --primary-hover: #094356;
-      --accent: #2a9d8f;
-      --bg-surface: #f4f8fa;
-      --card-bg: #ffffff;
-      --border-color: #cbd5e1;
-      --text-main: #1e293b;
-      --text-muted: #64748b;
-      --focus-ring: rgba(13, 92, 117, 0.25);
-    }
-
-    * {
+    /* Reset and Accessible Typography */
+    *, *::before, *::after {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
     }
 
     body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-      background-color: var(--bg-surface);
-      color: var(--text-main);
-      line-height: 1.5;
-      padding: 2rem 1rem;
+      font-family: Arial, Helvetica, sans-serif;
+      line-height: 1.6;
+      color: #1a1a1a;
+      background-color: #f8fafc;
+      padding: 24px 16px;
     }
 
-    .form-container {
-      max-width: 880px;
+    /* Container */
+    .form-wrapper {
+      max-width: 600px;
       margin: 0 auto;
+      background: #ffffff;
+      border: 2px solid #005a9c; /* Accessible high-contrast border */
+      border-radius: 8px;
+      padding: 24px;
+    }
+
+    /* Header */
+    h1 {
+      font-size: 1.5rem;
+      color: #003366;
+      margin-bottom: 8px;
+    }
+
+    p.instructions {
+      font-size: 0.95rem;
+      margin-bottom: 24px;
+      color: #333333;
+    }
+
+    /* Semantic Grouping */
+    fieldset {
+      border: 1px solid #767676;
+      border-radius: 6px;
+      padding: 16px;
+      margin-bottom: 20px;
+    }
+
+    legend {
+      font-weight: bold;
+      color: #003366;
+      padding: 0 6px;
+      font-size: 1.1rem;
+    }
+
+    .form-row {
+      margin-bottom: 16px;
+    }
+
+    .form-row:last-child {
+      margin-bottom: 0;
+    }
+
+    /* Labels & Hints */
+    label {
+      display: block;
+      font-weight: bold;
+      margin-bottom: 4px;
+      font-size: 0.95rem;
+    }
+
+    .hint {
+      display: block;
+      font-size: 0.85rem;
+      color: #555555;
+      margin-bottom: 6px;
+    }
+
+    .required-indicator {
+      color: #b30000;
+      font-weight: bold;
+    }
+
+    /* Inputs with high contrast and visible focus */
+    input[type="text"],
+    input[type="tel"],
+    input[type="date"],
+    select,
+    textarea {
+      width: 100%;
+      padding: 10px 12px;
+      font-size: 1rem;
+      border: 2px solid #4a5568;
+      border-radius: 4px;
+      background-color: #ffffff;
+      color: #1a1a1a;
+    }
+
+    /* Clear keyboard focus indicator */
+    input:focus,
+    select:focus,
+    textarea:focus,
+    button:focus {
+      outline: 3px solid #005a9c;
+      outline-offset: 2px;
+    }
+
+    /* Checkbox layout */
+    .checkbox-container {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      font-weight: normal;
+      cursor: pointer;
+    }
+
+    .checkbox-container input[type="checkbox"] {
+      width: 20px;
+      height: 20px;
+      margin-top: 2px;
+      accent-color: #005a9c;
+    }
+
+    /* Accessible Submit Button */
+    button[type="submit"] {
+      background-color: #005a9c;
+      color: #ffffff;
+      border: none;
+      padding: 12px 24px;
+      font-size: 1rem;
+      font-weight: bold;
+      border-radius: 4px;
+      cursor: pointer;
+      display: inline-block;
+      min-height: 48px; /* Touch-friendly size */
+    }
+
+    button[type="submit"]:hover {
+      background-color: #003e6b;
+    }
+  </style>
+</head>
+<body>
+
+  <main class="form-wrapper">
+    <header>
+      <h1>Patient Intake Form</h1>
+      <p class="instructions">
+        Fields marked with an asterisk (<span class="required-indicator" aria-hidden="true">*</span>) are mandatory.
+      </p>
+    </header>
+
+    <form action="#" method="POST" novalidate>
+
+      <!-- Personal Information -->
+      <fieldset>
+        <legend>Personal Information</legend>
+
+        <div class="form-row">
+          <label for="fullName">
+            Full Name <span class="required-indicator" aria-hidden="true">*</span>
+          </label>
+          <input 
+            type="text" 
+            id="fullName" 
+            name="fullName" 
+            required 
+            aria-required="true"
+            autocomplete="name">
+        </div>
+
+        <div class="form-row">
+          <label for="dob">
+            Date of Birth <span class="required-indicator" aria-hidden="true">*</span>
+          </label>
+          <input 
+            type="date" 
+            id="dob" 
+            name="dob" 
+            required 
+            aria-required="true"
+            aria-describedby="dob-hint">
+          <span id="dob-hint" class="hint">Format: DD/MM/YYYY</span>
+        </div>
+
+        <div class="form-row">
+          <label for="phone">
+            Mobile Number <span class="required-indicator" aria-hidden="true">*</span>
+          </label>
+          <input 
+            type="tel" 
+            id="phone" 
+            name="phone" 
+            required 
+            aria-required="true"
+            autocomplete="tel"
+            aria-describedby="phone-hint">
+          <span id="phone-hint" class="hint">Used for appointment confirmations.</span>
+        </div>
+      </fieldset>
+
+      <!-- Medical Details -->
+      <fieldset>
+        <legend>Medical Information</legend>
+
+        <div class="form-row">
+          <label for="department">
+            Department to Visit <span class="required-indicator" aria-hidden="true">*</span>
+          </label>
+          <select id="department" name="department" required aria-required="true">
+            <option value="">-- Please select a department --</option>
+            <option value="general">General Medicine</option>
+            <option value="cardiology">Cardiology</option>
+            <option value="orthopedics">Orthopedics</option>
+            <option value="pediatrics">Pediatrics</option>
+          </select>
+        </div>
+
+        <div class="form-row">
+          <label for="symptoms">Brief Reason for Visit</label>
+          <textarea 
+            id="symptoms" 
+            name="symptoms" 
+            rows="4" 
+            aria-describedby="symptoms-hint"></textarea>
+          <span id="symptoms-hint" class="hint">Mention any current symptoms, pains, or known allergies.</span>
+        </div>
+      </fieldset>
+
+      <!-- Consent -->
+      <div class="form-row">
+        <label class="checkbox-container">
+          <input 
+            type="checkbox" 
+            id="consent" 
+            name="consent" 
+            required 
+            aria-required="true">
+          <span>
+            I consent to hospital care evaluation and confirm all submitted information is accurate. 
+            <span class="required-indicator" aria-hidden="true">*</span>
+          </span>
+        </label>
+      </div>
+
+      <!-- Action -->
+      <div>
+        <button type="submit">Submit Registration</button>
+      </div>
+
+    </form>
+  </main>
+
+</body>
+</html>
       background: var(--card-bg);
       border-radius: 8px;
       box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
